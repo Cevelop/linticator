@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/com.linticator.feature_1.6.0.qualifier.jar" id="com.linticator.feature" version="1.6.0.qualifier">
+      <category name="com.linticator.category"/>
+   </feature>
+   <feature url="features/com.linticator.quickfixes.feature_1.6.0.qualifier.jar" id="com.linticator.quickfixes.feature" version="1.6.0.qualifier">
+      <category name="com.linticator.category"/>
+   </feature>
+   <category-def name="com.linticator.category" label="Linticator"/>
+</site>

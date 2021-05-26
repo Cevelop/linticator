@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Linticator"
+            id="com.linticator">
+      </category>
+      <view
+            category="com.linticator"
+            class="com.linticator.documentation.DocumentationView"
+            icon="resources/icons/docview.png"
+            id="com.linticator.view.DocumentationView"
+            name="Documentation View"
+            restorable="true">
+      </view>
+            <view
+            category="com.linticator"
+            class="com.linticator.view.LibraryProblemsView"
+            icon="resources/icons/library-problems-view.gif"
+            id="com.linticator.libraryproblemsview"
+            name="Library Problems">
+      </view>
+   </extension>
+    <extension point="org.eclipse.help.toc">
+      <toc file="docs/toc.xml"
+           primary="true"/>
+   </extension>
+   <extension point="org.eclipse.help.contexts">
+   		<contexts file="docs/contexts.xml"/>
+   </extension>
+   <extension
+         id="lintMarker"
+         name="Lint Marker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   <extension
+         id="lintLibraryMarker"
+         name="Lint Library Marker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.textmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+      <attribute
+            name="externalFileLocation">
+      </attribute>
+      <attribute
+            name="externalFileLine">
+      </attribute>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="com.linticator.view.preferences.PropertyAndPreferencePage"
+            id="com.linticator.preferences"
+            name="Linticator">
+      </page>
+      <page
+            category="com.linticator.preferences"
+            class="com.linticator.licensing.LicensePreferencePage"
+            id="com.linticator.preferences.license"
+            name="License">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="com.linticator.view.preferences.LinticatorPropertyPage"
+            id="com.linticator.properties"
+            name="Linticator">
+         <filter
+               name="nature"
+               value="com.linticator.Nature">
+         </filter>
+         <enabledWhen>
+            <or>
+	            <instanceof
+	                  value="org.eclipse.core.resources.IProject">
+	            </instanceof>
+	            <instanceof
+	                  value="org.eclipse.cdt.core.model.ICProject">
+	            </instanceof>
+            </or>
+         </enabledWhen>
+      </page>
+      <page
+            category="com.linticator.properties"
+            class="com.linticator.view.preferences.PropertyAndPreferencePage"
+            id="com.linticator.properties.configuration"
+            name="Lint Configuration">
+         <filter
+               name="nature"
+               value="com.linticator.Nature">
+         </filter>
+         <enabledWhen>
+            <or>
+                <instanceof
+                      value="org.eclipse.core.resources.IProject">
+                </instanceof>
+                <instanceof
+                      value="org.eclipse.cdt.core.model.ICProject">
+                </instanceof>
+            </or>
+         </enabledWhen>
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            class="com.linticator.quickfixes.ViolationResolutionGenerator"
+            markerType="com.linticator.lintMarker">
+      </markerResolutionGenerator>
+   </extension>
+   <extension
+         id="com.linticator.Nature"
+         name="Linticator Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="com.linticator.LintNature">
+         </run>
+      </runtime>
+      <builder
+            id="com.linticator.Linticator.lintConfigBuilder">
+      </builder>
+      <builder
+            id="com.linticator.Linticator.lintBuilder">
+      </builder>
+   </extension>
+   <extension
+         id="com.linticator.Linticator.lintConfigBuilder"
+         name="Linticator Configuration Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="com.linticator.lint.configurator.LintConfigBuilder">
+         </run>
+      </builder>
+   </extension>
+    <extension
+          id="com.linticator.Linticator.lintBuilder"
+          name="Linticator Lint Builder"
+          point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="com.linticator.lint.LintBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+       point="org.eclipse.ui.commands">
+    <command
+          id="com.linticator.addNature"
+          name="Add Lint Nature">
+    </command>
+    <command
+          id="com.linticator.removeNature"
+          name="Remove Lint Nature">
+    </command>
+    <command
+          id="com.linticator.removeMarkers"
+          name="Remove all Messages">
+    </command>
+    <command
+          categoryId="org.eclipse.ui.category.navigate"
+          defaultHandler="com.linticator.documentation.OpenDocumentationHandler"
+          id="com.linticator.showDocumentation"
+          name="Show Documentation">
+    </command>
+    <command
+          id="com.linticator.runLint"
+          name="Run Linticator">
+    </command>
+    <command
+          id="com.linticator.testLinticatorConfiguration"
+          name="Test Linticator Configuration">
+    </command>
+    <command
+          id="com.linticator.inhibitMessagesInFile"
+          name="Inhibit Messages">
+    </command>
+    <command
+          id="com.linticator.configure"
+          name="Configure Linticator">
+    </command>
+ </extension>
+ 
+  <!-- for the project explorer (note: duplicated below) -->
+ 
+   <extension
+          point="org.eclipse.ui.popupMenus">
+       <objectContribution
+             id="com.linticator.addLintContribution"
+             objectClass="org.eclipse.core.resources.IProject">
+         <visibility>
+         <and>
+         	<or>
+              <objectState
+                 name="projectNature"
+                 value="org.eclipse.cdt.core.ccnature"/>
+              <objectState
+                 name="projectNature"
+                 value="org.eclipse.cdt.core.cnature"/>
+             </or>
+         <not>
+         	<objectState
+                 name="projectNature"
+                 value="com.linticator.Nature"/>
+         </not>
+         </and>
+         </visibility>
+         <menu
+               id="com.linticator.ui"
+               label="Linticator"
+               path="buildGroup">
+            <groupMarker name="rebuild"/>
+            <separator name="nature"/>
+         </menu>
+          <action
+                class="com.linticator.actions.EnableLint"
+                definitionId="com.linticator.addNature"
+                id="com.linticator.addNatureAction"
+                label="Enable Linticator"
+                menubarPath="com.linticator.ui/nature"
+                style="push">
+          </action>
+       </objectContribution>
+       <objectContribution
+             id="com.linticator.removeLintContribution"
+             objectClass="org.eclipse.core.resources.IProject">
+         <visibility>
+              <objectState
+                 name="projectNature"
+                 value="com.linticator.Nature"/>
+         </visibility>
+         <menu
+               id="com.linticator.ui"
+               label="Linticator"
+               path="buildGroup">
+            <groupMarker name="rebuild"/>
+            <separator name="nature"/>
+         </menu>
+          <action
+                class="com.linticator.actions.DisableLint"
+                definitionId="com.linticator.removeNature"
+                id="com.linticator.removeNatureAction"
+                label="Disable Linticator"
+                menubarPath="com.linticator.ui/nature"
+                style="push">
+          </action>
+       </objectContribution>
+       <objectContribution
+             id="com.linticator.runLintContribution"
+             objectClass="org.eclipse.core.resources.IProject">
+         <visibility>
+              <objectState
+                 name="projectNature"
+                 value="com.linticator.Nature"/>
+         </visibility>
+         <menu
+               id="com.linticator.ui"
+               label="Linticator"
+               path="buildGroup">
+            <groupMarker name="rebuild"/>
+            <separator name="nature"/>
+         </menu>
+          <action
+                class="com.linticator.actions.RunOnProjectAction"
+                definitionId="com.linticator.runLint"
+                icon="resources/icons/scrubber.gif"
+                id="com.linticator.runLintAction"
+                label="Run Linticator on Project"
+                menubarPath="com.linticator.ui/nature"
+                style="push">
+          </action>
+          <action
+                class="com.linticator.actions.RemoveMarkers"
+                definitionId="com.linticator.removeMarkers"
+                id="com.linticator.removeMarkersAction"
+                label="Remove all Messages"
+                menubarPath="com.linticator.ui/nature"
+                style="push">
+          </action>
+       </objectContribution>
+       
+       <objectContribution
+             id="com.linticator.runLintOnFolderContribution"
+             objectClass="org.eclipse.cdt.core.model.ICElement">
+         <visibility>
+            <not>
+               <objectClass name="org.eclipse.cdt.core.model.ICProject"/>
+            </not>
+         </visibility>
+         <menu
+               id="com.linticator.ui2"
+               label="Linticator"
+               path="buildGroup">
+            <groupMarker name="rebuild"/>
+            <separator name="nature"/>
+         </menu>
+          <action
+                class="com.linticator.actions.RunOnFolderAction"
+                icon="resources/icons/scrubber.gif"
+                id="com.linticator.runOnFolder"
+                label="Run Linticator on Resource"
+                menubarPath="com.linticator.ui2/nature"
+                style="push">
+          </action>
+       </objectContribution>
+       
+    </extension>
+    
+    <!-- for the c/c++ projects view (note: duplicated above) -->
+    
+    <extension
+          point="org.eclipse.ui.popupMenus">
+       <objectContribution
+             id="com.linticator.addLintContribution"
+             objectClass="org.eclipse.cdt.core.model.ICProject">
+         <visibility>
+         <and>
+         	<or>
+              <objectState
+                 name="projectNature"
+                 value="org.eclipse.cdt.core.ccnature"/>
+              <objectState
+                 name="projectNature"
+                 value="org.eclipse.cdt.core.cnature"/>
+             </or>
+         <not>
+         	<objectState
+                 name="projectNature"
+                 value="com.linticator.Nature"/>
+         </not>
+         </and>
+         </visibility>
+         <menu
+               id="com.linticator.ui"
+               label="Linticator"
+               path="buildGroup">
+            <groupMarker name="rebuild"/>
+            <separator name="nature"/>
+         </menu>
+          <action
+                class="com.linticator.actions.EnableLint"
+                definitionId="com.linticator.addNature"
+                id="com.linticator.addNatureAction"
+                label="Enable Linticator"
+                menubarPath="com.linticator.ui/nature"
+                style="push">
+          </action>
+       </objectContribution>
+       <objectContribution
+             id="com.linticator.removeLintContribution"
+             objectClass="org.eclipse.cdt.core.model.ICProject">
+         <visibility>
+              <objectState
+                 name="projectNature"
+                 value="com.linticator.Nature"/>
+         </visibility>
+         <menu
+               id="com.linticator.ui"
+               label="Linticator"
+               path="buildGroup">
+            <groupMarker name="rebuild"/>
+            <separator name="nature"/>
+         </menu>
+          <action
+                class="com.linticator.actions.DisableLint"
+                definitionId="com.linticator.removeNature"
+                id="com.linticator.removeNatureAction"
+                label="Disable Linticator"
+                menubarPath="com.linticator.ui/nature"
+                style="push">
+          </action>
+       </objectContribution>
+       <objectContribution
+             id="com.linticator.runLintContribution"
+             objectClass="org.eclipse.cdt.core.model.ICProject">
+         <visibility>
+              <objectState
+                 name="projectNature"
+                 value="com.linticator.Nature"/>
+         </visibility>
+         <menu
+               id="com.linticator.ui"
+               label="Linticator"
+               path="buildGroup">
+            <groupMarker name="rebuild"/>
+            <separator name="nature"/>
+         </menu>
+          <action
+                class="com.linticator.actions.RunOnProjectAction"
+                definitionId="com.linticator.runLint"
+                icon="resources/icons/scrubber.gif"
+                id="com.linticator.runLintAction"
+                label="Run Linticator on Project"
+                menubarPath="com.linticator.ui/nature"
+                style="push">
+          </action>
+          <action
+                class="com.linticator.actions.RemoveMarkers"
+                definitionId="com.linticator.removeMarkers"
+                id="com.linticator.removeMarkersAction"
+                label="Remove all Messages"
+                menubarPath="com.linticator.ui/nature"
+                style="push">
+          </action>
+       </objectContribution>
+
+    </extension>
+    
+    
+   <extension
+         point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+            class="com.linticator.view.console.ShowConsolePageParticipant"
+            id="com.linticator.showConsolePageParticipant">
+         <enablement>
+            <instanceof
+                  value="com.linticator.view.console.LintConsole">
+            </instanceof>
+         </enablement>
+      </consolePageParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.linticator.view.welcome.StartupHook">
+      </startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.configExtension">
+      <configExtension
+            configId="org.eclipse.ui.intro.universalConfig"
+            content="intro/flexclipse_overview.xml">
+      </configExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.cdt.ui.CPerspective">
+         <view
+               id="com.linticator.view.DocumentationView"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ContentOutline">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension point="org.eclipse.core.expressions.propertyTesters">
+    <propertyTester
+          class="com.linticator.view.LintMarkerProperty"
+          id="com.linticator.view.lintMarkerProperty"
+          namespace="com.linticator"
+          properties="isLint"
+          type="org.eclipse.ui.views.markers.MarkerItem">
+    </propertyTester>
+    <propertyTester
+          class="com.linticator.HasFlexeLintNatureProperty"
+          id="com.linticator.view.canRunLintMarkerProperty"
+          namespace="com.linticator"
+          properties="canRunLint"
+          type="org.eclipse.core.runtime.IAdaptable">
+    </propertyTester>
+  </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="true"
+            locationURI="popup:org.eclipse.ui.ide.MarkersView?before=org.eclipse.ui.navigate.goToResource">
+         <command
+               commandId="com.linticator.showDocumentation"
+               icon="resources/icons/docview.png"
+               label="Show Documentation"
+               style="push">
+            <visibleWhen>
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <test
+                        args="com.linticator.lintMarker"
+                        property="com.linticator.isLint">
+                  </test>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="com.linticator.toolbars.lintToolbar"
+               label="Run Lint">
+            <command
+                  commandId="com.linticator.runLint"
+                  icon="resources/icons/scrubber.gif"
+                  tooltip="Run Linticator on Project">
+            </command>
+         </toolbar>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               label="Linticator"
+               mnemonic="L">
+            <command
+                  commandId="com.linticator.testLinticatorConfiguration"
+                  label="Test Configuration ..."
+                  style="push">
+            </command>
+            <command
+                  commandId="com.linticator.runLint"
+                  label="Run Linticator on Project"
+                  icon="resources/icons/scrubber.gif"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.linticator.inhibitMessagesInFile"
+                  label="Inhibit Messages in File ..."
+                  style="push">
+            </command>
+            <command
+                  commandId="com.linticator.removeMarkers"
+                  label="Remove all Messages from Project"
+                  style="push">
+            </command>
+            <command
+                  commandId="com.linticator.configure"
+                  label="Configure Linticator..."
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+            class="com.linticator.actions.RunFlexeLintHandler"
+            commandId="com.linticator.runLint">
+			<enabledWhen>
+				<or>
+					<with variable="activeEditorId">
+						<equals value="org.eclipse.cdt.ui.editor.CEditor"/>
+					</with>
+               		<iterate ifEmpty="false" operator="or">
+               			<test
+                   			property="org.eclipse.core.resources.projectNature"
+                   			value="com.linticator.Nature">
+             			</test>
+            		</iterate>
+               </or>
+			</enabledWhen>
+		</handler>
+  <handler
+        class="com.linticator.actions.TestLinticatorConfigurationHandler"
+        commandId="com.linticator.testLinticatorConfiguration">
+  </handler>
+  <handler
+        class="com.linticator.actions.RemoveMarkers"
+        commandId="com.linticator.removeMarkers">
+                			<enabledWhen>
+				<or>
+					<with variable="activeEditorId">
+						<equals value="org.eclipse.cdt.ui.editor.CEditor"/>
+					</with>
+               		<iterate ifEmpty="false" operator="or">
+               			<test
+                   			property="org.eclipse.core.resources.projectNature"
+                   			value="com.linticator.Nature">
+             			</test>
+            		</iterate>
+               </or>
+			</enabledWhen>
+  </handler>
+  <handler
+        class="com.linticator.actions.InhibitMessagesHandler"
+        commandId="com.linticator.inhibitMessagesInFile">
+        			<enabledWhen>
+				<or>
+					<with variable="activeEditorId">
+						<equals value="org.eclipse.cdt.ui.editor.CEditor"/>
+					</with>
+               		<iterate ifEmpty="false" operator="or">
+               			<test
+                   			property="org.eclipse.core.resources.projectNature"
+                   			value="com.linticator.Nature">
+             			</test>
+            		</iterate>
+               </or>
+			</enabledWhen>
+  </handler>
+  <handler
+        class="com.linticator.actions.OpenLinticatorConfiguration"
+        commandId="com.linticator.configure">
+  </handler>
+	</extension>
+   <extension
+         point="org.eclipse.cdt.core.templates">
+      <template
+            id="com.linticator.projectTemplate"
+            location="resources/projectTemplate/template.xml"
+            projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+      </template>
+   </extension>
+   <extension
+         point="org.eclipse.cdt.core.templateProcessTypes">
+      <processType
+            name="addNatureProcess"
+            processRunner="com.linticator.AddLintNatureProcessRunner">
+         <simple
+               name="project">
+         </simple>
+      </processType>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.markerSupport">
+      <markerContentGenerator
+            defaultMarkerGrouping="org.eclipse.ui.ide.resourceField"
+            id="com.linticator.libraryProblemsGenerator"
+            name="FlexeLint Library Problems Marker Generator">
+         <markerFieldReference
+               id="org.eclipse.ui.ide.severityAndDescriptionField">
+         </markerFieldReference>
+         <markerFieldReference
+               id="org.eclipse.ui.ide.locationField">
+         </markerFieldReference>
+         <markerFieldReference
+               id="org.eclipse.ui.ide.resourceField">
+         </markerFieldReference>
+         <markerTypeReference
+               id="com.linticator.lintLibraryMarker">
+         </markerTypeReference>
+      </markerContentGenerator>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:com.linticator.libraryproblemsview">
+         <menu 
+               id="org.eclipse.ui.ide.problems.filtersMenu"
+               label="Show">
+            <dynamic
+                  class="org.eclipse.ui.internal.views.markers.FiltersContribution"
+                  id="org.eclipse.ui.ide.filtersContribution">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activePart">
+                  <instanceof value="com.linticator.view.LibraryProblemsView"/>
+                  <test
+                        property="org.eclipse.ui.ide.hasFilters">
+                  </test>
+               </with>
+            </visibleWhen>
+         </menu>
+         <menu
+               id="org.eclipse.ui.ide.problems.markerSortMenu"
+               label="Sort By">
+            <dynamic
+                  class="org.eclipse.ui.internal.views.markers.SortFieldContribution"
+                  id="org.eclipse.ui.ide.problems.sortEntries">
+            </dynamic>
+         </menu>
+         <command
+               commandId="org.eclipse.ui.ide.configureFilters"
+               mnemonic="Configure Contents..."
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.ide.configureColumns"
+               mnemonic="Columns..."
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.ui.window.preferences"
+               label="Preferences"
+               style="push">
+            <parameter
+                  name="preferencePageId"
+                  value="org.eclipse.ui.ide.markers">
+            </parameter>
+         </command>
+      </menuContribution>
+         
+   </extension>
+   <extension
+         point="org.eclipse.cdt.ui.quickFixProcessors">
+      <quickFixProcessor
+            class="com.linticator.quickfixes.QuickFixProcessor"
+            id="com.linticator.quickFixProcessor1">
+         <handledMarkerTypes>
+            <markerType
+                  id="lintMarker">
+            </markerType>
+         </handledMarkerTypes>
+            <enablement>
+		      <with variable="projectNatures">
+		         <iterate operator="or">
+		            <equals value="com.linticator.Nature"/>
+		         </iterate>
+		      </with>
+         	</enablement>
+      </quickFixProcessor>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="com.linticator.launch.Launcher"
+            id="com.linticator.launchConfiguration"
+            modes="run"
+            name="Linticator">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="com.linticator.launchConfiguration"
+            icon="resources/icons/scrubber.gif"
+            id="com.linticator.launchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="com.linticator.launch.LaunchConfigurationTabGroup"
+            id="com.linticator.launchConfigurationTabGroup"
+            type="com.linticator.launchConfiguration">
+         <launchMode
+               mode="run">
+         </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+</plugin>

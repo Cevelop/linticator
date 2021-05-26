@@ -1,0 +1,16 @@
+.DS_STORE
+.DS_Store
+.api_description
+.bundledata*
+.contributions*
+.contributors*
+.directory
+/*/bin
+*.class
+/*/target/
+/*/surefire-reports/
+runtime-EclipseApplication/
+junit-workspace/
+.metadata/
+.polyglot.build.properties
+LinticatorDemoWorkspace/.settings

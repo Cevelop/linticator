@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            class="com.linticator.astquickfixes.ViolationResolutionGenerator"
+            markerType="com.linticator.lintMarker">
+      </markerResolutionGenerator>
+   </extension>
+</plugin>

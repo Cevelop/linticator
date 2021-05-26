@@ -1,0 +1,14 @@
+// Library settings 
++fdi				// The search for #include files will start with the directory of the including file
+
+// Output
+// -#m-	Message start and end symbol
+// -#t-	Message separator symbol
+// %f	Filename
+// %l	Linenumber
+// %c	Columnnumber
+// %t	Messagetype
+// %n	Messagenumber
+// %m	Description
+-"format=-#m-%(%f-#t-%l-#t-%c-#t-%)%t-#t-%n-#t-%m-#m-"
+-width(0,0)		// Do not break lines

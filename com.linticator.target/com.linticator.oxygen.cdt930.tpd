@@ -1,0 +1,16 @@
+target "Linticator for Eclipse Oxygen and CDT 9.3.0"
+
+with source requirements
+
+location "http://download.eclipse.org/eclipse/updates/4.7" {
+    org.eclipse.platform.ide [4.7.0,5.0.0)
+    org.eclipse.pde.feature.group lazy
+    org.eclipse.pde.source.feature.group lazy
+	org.eclipse.platform.sdk [4.7.0,5.0.0)
+	org.eclipse.sdk.ide [4.7.0,5.0.0)
+	org.eclipse.equinox.sdk.feature.group lazy
+}
+
+location "http://download.eclipse.org/releases/oxygen" {
+	org.eclipse.cdt.sdk.feature.group [9.4.0,10.0.0)
+}

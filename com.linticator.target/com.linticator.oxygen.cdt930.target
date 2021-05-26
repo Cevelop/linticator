@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde?>
+<!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
+<target name="Linticator for Eclipse Oxygen and CDT 9.3.0" sequenceNumber="1549791038">
+  <locations>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.platform.ide" version="4.7.3.M20180330-0640"/>
+      <unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.pde.source.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.platform.sdk" version="4.7.3.M20180330-0640"/>
+      <unit id="org.eclipse.sdk.ide" version="4.7.3.M20180330-0640"/>
+      <unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
+      <repository location="http://download.eclipse.org/eclipse/updates/4.7"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="false" type="InstallableUnit">
+      <unit id="org.eclipse.cdt.sdk.feature.group" version="9.4.3.201802261533"/>
+      <repository location="http://download.eclipse.org/releases/oxygen"/>
+    </location>
+  </locations>
+</target>

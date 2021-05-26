@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<introContent>
+	<extensionContent id="chhsrifsflexclipse-introExtension"
+		style="css/overview.css" name="Linticator" 
+		alt-style="css/overview.properties" path="overview/@">
+		<group style-id="content-group" id="chhsrifsflexclipse-introLink-group">
+			<link label="Linticator" url="http://www.linticator.com"
+			 id="flexclipseIntro"
+				style-id="content-link">
+				<text>Discover Linticator, the Flexe/Pc-Lint integration for Eclipse CDT.</text>
+			</link>
+		</group>
+	</extensionContent>
+</introContent>
