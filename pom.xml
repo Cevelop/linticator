@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 	<properties>
 		<target-file>com.linticator.oxygen.cdt930</target-file>
-		<tycho-version>1.0.0</tycho-version>
+		<tycho-version>2.3.0</tycho-version>
 	</properties>
 	<modules>
 		<module>com.linticator</module>
@@ -27,14 +27,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<resolver>p2</resolver>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-versions-plugin</artifactId>
 				<version>${tycho-version}</version>
 			</plugin>
@@ -43,6 +35,7 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
+					<resolver>p2</resolver>
 					<target>
 						<artifact>
 							<groupId>ch.hsr.ifs</groupId>
@@ -50,31 +43,23 @@
 							<version>${project.version}</version>
 						</artifact>
 					</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jarsigner-plugin</artifactId>
-				<version>1.2</version>
-				<executions>
-					<execution>
-						<id>sign</id>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<keystore>${keystore}</keystore>
-					<alias>${keyalias}</alias>
-					<storepass>${certpass}</storepass>
-					<storetype>pkcs12</storetype>
-					<arguments>
-						<argument>-digestalg</argument>
-						<argument>SHA1</argument>
-						<argument>-sigalg</argument>
-						<argument>SHA1withRSA</argument>
-					</arguments>
+          <environments>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
 				</configuration>
 			</plugin>
 		</plugins>
