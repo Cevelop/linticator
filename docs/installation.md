@@ -4,7 +4,7 @@ To use Linticator, you first need to install a Lint from Gimpel. Second, Lintica
 
 ![](/docs/images/install_linticator_1.png)
 
-To install Linticator, please use the update site ```http://linticator.com/update/v0/``` (case sensitive) and select _Linticator_. If you have Eclipse CDT Helios (3.6) or newer, you can also check the _Linticator Quickfixes_. If you're unsure what Eclipse version you have, you can try to install the _Quickfixes_ and if Eclipse doesn't complain, your version of Eclipse is recent enough.
+To install Linticator, please use the update site ```https://eclipse-update-sites.s3.eu-central-1.amazonaws.com/linticator``` and select _Linticator_. If you have Eclipse CDT Helios (3.6) or newer, you can also check the _Linticator Quickfixes_. If you're unsure what Eclipse version you have, you can try to install the _Quickfixes_ and if Eclipse doesn't complain, your version of Eclipse is recent enough.
 
 ![](/docs/images/install_linticator_2.png)
 
